@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="在JDK动态代理中使用拦截器1234567891011121314151617181920212223242526272829303132333435363738394041424344454647public class InterceptorJdkProxy implements Invocat">
+    
+
+    <!--Author-->
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="拦截器与责任链模式"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Live Once"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>拦截器与责任链模式 - Live Once</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/07/18/拦截器与责任链模式/">
+                拦截器与责任链模式
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h3 id="在JDK动态代理中使用拦截器"><a href="#在JDK动态代理中使用拦截器" class="headerlink" title="在JDK动态代理中使用拦截器"></a>在JDK动态代理中使用拦截器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorJdkProxy</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object target;<span class="comment">//真实对象</span></span><br><span class="line">  <span class="keyword">private</span> String interceptorClass = <span class="keyword">null</span>;<span class="comment">//拦截器全限定名    public InterceptorJdkProxy(Object target, String interceptorClass)&#123;</span></span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">        <span class="keyword">this</span>.interceptorClass = interceptorClass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 绑定委托对象并返回一个【代理占位】</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> target 真实对象</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> 代理对象 【占位】</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">bind</span> <span class="params">(Object target, String interceptorClass)</span></span>&#123;</span><br><span class="line">        <span class="comment">//取得代理对象</span></span><br><span class="line">  <span class="keyword">return</span> Proxy.newProxyInstance(target.getClass().getClassLoader(),target.getClass().getInterfaces(),<span class="keyword">new</span> InterceptorJdkProxy(target,interceptorClass));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过代理对象调用方法，首先进入这个方法</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> proxy 代理对象</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> method 方法，被调用方法</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> args 方法的参数</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Throwable */</span>  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (interceptorClass == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//没有设置拦截器则直接反射原有方法</span></span><br><span class="line">  <span class="keyword">return</span> method.invoke(target, args);</span><br><span class="line">        &#125;</span><br><span class="line">        Object result = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//通过反射生成拦截器</span></span><br><span class="line">  Interceptor interceptor = (Interceptor) Class.forName(interceptorClass).newInstance();</span><br><span class="line">        <span class="comment">//调用前置方法</span></span><br><span class="line">  <span class="keyword">if</span> (interceptor.before(proxy, target , method, args))&#123;</span><br><span class="line">            <span class="comment">//反射原有对象方法</span></span><br><span class="line">  result = method.invoke(target, args);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;<span class="comment">//返回false执行around方法</span></span><br><span class="line">  interceptor.around(proxy, target, method, args);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//调用后置方法</span></span><br><span class="line">  interceptor.after(proxy, target, method, args);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h3><ol>
+<li>在bind方法中用JDK动态代理绑定了一个对象，然后返回代理对象。</li>
+<li>如果没有设置拦截器，则直接反射真实对象的方法，然后结束，否则进行第3步。</li>
+<li>通过反射生成拦截器，并准备使用它。</li>
+<li>调用拦截器的before方法，如果返回为true，反射原来的方法，否则运行拦截器的around方法。</li>
+<li>调用拦截器的after方法。</li>
+<li>返回结果。</li>
+</ol>
+<h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><p>责任链拦截器接口定义<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Interceptor1</span> <span class="keyword">implements</span> <span class="title">Interceptor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">before</span><span class="params">(Object proxy, Object target, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"【拦截器1】的before方法"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">around</span><span class="params">(Object proxy, Object target, Method method, Object[] args)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">(Object proxy, Object target, Method method, Object[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"【拦截器1】的after方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以此类推Interceptor2，Interceptor3</p>
+<p>测试责任链模式上的多拦截器<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HelloWorld proxy1 = (HelloWorld) </span><br><span class="line">InterceptorJdkProxy.bind(<span class="keyword">new</span> HelloWorldImpl(),<span class="string">"com.xxx.Interceptor1"</span>); </span><br><span class="line">        </span><br><span class="line">HelloWorld proxy2 = (HelloWorld) InterceptorJdkProxy.bind(proxy1,<span class="string">"com.xxx.Interceptor2"</span>);    </span><br><span class="line">     </span><br><span class="line">HelloWorld proxy3 = (HelloWorld) InterceptorJdkProxy.bind(proxy2,<span class="string">"com.xxx.Interceptor3"</span>);   </span><br><span class="line"></span><br><span class="line">proxy3.sayHelloWorld();</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/Java设计模式/">#Java设计模式</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This is a personal technology blog.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/18/工厂模式/">工厂模式</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/18/观察者模式/">观察者模式</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/18/拦截器与责任链模式/">拦截器与责任链模式</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/18/Java动态代理/">Java动态代理</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
