@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="模块说明:新增模块“状态分析”，包括数据库设计，基于SSM框架分层业务实现，前端页面调试及操作优化以及本地测试，实现后台自动化分析设备的最新电池电量，传感器上传的数据是否异常，传输是否中断，以及获取中断时间，和计算前一天的丢包率，方便设备维护人员查看设备最新状态，根据设备实际情况，填写待维护事项。
+">
+    
+
+    <!--Author-->
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="设备状态分析"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Live Once"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>设备状态分析 - Live Once</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/07/19/设备状态分析/">
+                设备状态分析
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-19</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h2 id="模块说明"><a href="#模块说明" class="headerlink" title="模块说明:"></a>模块说明:</h2><p>新增模块“状态分析”，包括数据库设计，基于SSM框架分层业务实现，前端页面调试及操作优化以及本地测试，实现后台自动化分析设备的最新电池电量，传感器上传的数据是否异常，传输是否中断，以及获取中断时间，和计算前一天的丢包率，方便设备维护人员查看设备最新状态，根据设备实际情况，填写待维护事项。</p>
+<h2 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>添加Spring定时任务@Scheduled，每天根据设备数据定时分析设备状态。</p>
+<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><ol>
+<li>查询附带设备数据最新上传时间(addtime)的设备状态信息；</li>
+<li>根据addtime判断设备是否离线，若为null，则标记为“离线超7天”后跳过数据分析，否则进一步分析设备离线时间，并查询记录设备最新电量，以供参考；</li>
+<li>若设备正常，则进行分析丢包率和传感器状态。</li>
+</ol>
+<h3 id="单独配置定时器-Scheduler-xml"><a href="#单独配置定时器-Scheduler-xml" class="headerlink" title="单独配置定时器 Scheduler.xml"></a>单独配置定时器 Scheduler.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt; <span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:task</span>=<span class="string">"http://www.springframework.org/schema/task"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">  http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">  http://www.springframework.org/schema/task </span></span></span><br><span class="line"><span class="tag"><span class="string">  http://www.springframework.org/schema/task/spring-task-3.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 定时任务 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"executor"</span> <span class="attr">pool-size</span>=<span class="string">"5"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">task:scheduler</span> <span class="attr">id</span>=<span class="string">"scheduler"</span> <span class="attr">pool-size</span>=<span class="string">"10"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"executor"</span> <span class="attr">scheduler</span>=<span class="string">"scheduler"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="配置web-xml"><a href="#配置web-xml" class="headerlink" title="配置web.xml"></a>配置web.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:/config/scheduler.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 每天凌晨02:0执行设备状态信息存储 </span></span><br><span class="line"><span class="meta">@Scheduled</span>(cron = <span class="string">"0 0 2 * * ?"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveStatusData</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 查询设备状态信息</span></span><br><span class="line">   List&lt;DeviceStatusEntity&gt; list = dsdDao.queryAll();</span><br><span class="line">   SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (DeviceStatusEntity dse : list) &#123;</span><br><span class="line">      <span class="keyword">if</span>(dse.getAddtime() == <span class="keyword">null</span>) &#123;</span><br><span class="line">         dse.setTransStatus(<span class="string">"离线超7天"</span>);</span><br><span class="line">         dse.setAddtime(sdf.format(<span class="keyword">new</span> Date()));</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">int</span> SN = dse.getSN();</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 判断传输状态和获取中断时间</span></span><br><span class="line">	  String addtime = dse.getAddtime();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         Date date = sdf.parse(addtime);</span><br><span class="line">         Date now = <span class="keyword">new</span> Date();</span><br><span class="line">         now.setMinutes(now.getMinutes() - <span class="number">30</span>);</span><br><span class="line">         <span class="keyword">int</span> res = date.compareTo(now);</span><br><span class="line">         <span class="keyword">if</span> (res &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> s = <span class="keyword">new</span> Date().getTime() - date.getTime();</span><br><span class="line">            <span class="keyword">if</span> (s &lt; <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>) &#123;</span><br><span class="line">               <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span>);</span><br><span class="line">               dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"分钟"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s &lt; <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span>) &#123;</span><br><span class="line">               <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>);</span><br><span class="line">               dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"小时"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span>);</span><br><span class="line">               dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"天"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String bp = dse.getBreakPoint();</span><br><span class="line">            bp = addtime;</span><br><span class="line">            dse.setBreakPoint(bp);</span><br><span class="line">            dse.setAddtime(sdf.format(<span class="keyword">new</span> Date()));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 查询最新一条数据,分析传感器状态</span></span><br><span class="line">  			String Q = dsdDao.queryQuanity(SN);</span><br><span class="line">            dse.setQuanity(Q);</span><br><span class="line">            dse.setSensorStatus(<span class="string">"/"</span>);</span><br><span class="line">            dse.setPLR(<span class="string">"/"</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">         &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            dse.setTransStatus(<span class="string">"正常"</span>);</span><br><span class="line">            dse.setAddtime(sdf.format(<span class="keyword">new</span> Date()));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 计算丢包率</span></span><br><span class="line">  			<span class="keyword">int</span> count = dsDao.queryPLR(SN);</span><br><span class="line">            DecimalFormat format = <span class="keyword">new</span> DecimalFormat(<span class="string">"0.00%"</span>);</span><br><span class="line">            Double dd = (<span class="number">1.0</span> - (<span class="keyword">double</span>) count / <span class="number">96</span>);</span><br><span class="line">            <span class="keyword">if</span>(dd &gt; <span class="number">0.1</span>) dse.setTransStatus(<span class="string">"丢包率异常"</span>);</span><br><span class="line">            String plr = format.format(dd);</span><br><span class="line">            dse.setPLR(plr);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//查询最新的电量</span></span><br><span class="line">  			String Q = dsdDao.queryQuanity(SN);</span><br><span class="line">            dse.setQuanity(Q);</span><br><span class="line">            <span class="comment">// 查询昨天一天的数据,分析传感器状态</span></span><br><span class="line">  			List&lt;BlaRriDataEntity&gt; bres = dsdDao.queryData(SN);</span><br><span class="line">            <span class="keyword">for</span> (BlaRriDataEntity bre : bres) &#123;</span><br><span class="line">               <span class="keyword">float</span> NH4 = bre.getNH4();</span><br><span class="line">               <span class="keyword">float</span> PH = bre.getPH();</span><br><span class="line">               <span class="keyword">float</span> ZS = bre.getZS();</span><br><span class="line">               <span class="keyword">float</span> ORP = bre.getORP();</span><br><span class="line">               <span class="keyword">float</span> CODMN = bre.getCODMn();</span><br><span class="line">               <span class="keyword">float</span> COD = bre.getCod();</span><br><span class="line">               <span class="keyword">float</span> DOVAL = bre.getDoVal();</span><br><span class="line">               <span class="comment">// 判断传感器数据是否异常</span></span><br><span class="line">  <span class="keyword">if</span> (NH4 &lt; <span class="number">0.0</span> || NH4 &gt; <span class="number">20.0</span> || PH &lt; <span class="number">0.0</span> || PH &gt; <span class="number">14.0</span> || ZS &lt; <span class="number">0.0</span> || ZS &gt; <span class="number">1000.0</span> || ORP &lt; -<span class="number">1500.0</span></span><br><span class="line">  || ORP &gt; <span class="number">1500.0</span> || CODMN &lt; <span class="number">0.0</span> || CODMN &gt; <span class="number">20.0</span> || COD &lt; <span class="number">0.0</span> || COD &gt; <span class="number">370.0</span></span><br><span class="line">  || DOVAL &lt; <span class="number">0.0</span> || DOVAL &gt; <span class="number">20.0</span>) &#123;</span><br><span class="line">                  dse.setSensorStatus(<span class="string">"数值异常"</span>);</span><br><span class="line">               &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  dse.setSensorStatus(<span class="string">"正常"</span>);</span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (ParseException e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// 保存数据到库</span></span><br><span class="line">  dsdDao.insert(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryAll"</span> <span class="attr">resultType</span>=<span class="string">"DeviceStatusEntity"</span>&gt;</span></span><br><span class="line">  SELECT d.SN,d.HSV,d.illumination,nbr.addtime,d.spotId</span><br><span class="line">   FROM devicestatus d</span><br><span class="line">  LEFT JOIN (SELECT SN,MAX(addtime) AS addtime FROM datablarri GROUP BY</span><br><span class="line">   SN) nbr</span><br><span class="line">  ON d.SN = nbr.SN </span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryQuanity"</span> <span class="attr">resultType</span>=<span class="string">"String"</span>&gt;</span> </span><br><span class="line">	SELECT Quanity FROM datablarri </span><br><span class="line">	WHERE SN = #&#123;SN&#125; </span><br><span class="line">	ORDER BY id desc limit 1</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryPLR"</span> <span class="attr">resultType</span>=<span class="string">"Integer"</span>&gt;</span></span><br><span class="line">  SELECT COUNT(*) FROM datablarri</span><br><span class="line">   WHERE SN=#&#123;SN&#125;</span><br><span class="line">  AND DATE_FORMAT(addtime,'%Y-%m-%d') &amp;gt; DATE_SUB(CURDATE(),INTERVAL 2</span><br><span class="line">   DAY)</span><br><span class="line">   AND DATE_FORMAT(addtime,'%Y-%m-%d') &amp;lt; CURDATE()</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryData"</span> <span class="attr">resultType</span>=<span class="string">"BlaRriDataEntity"</span>&gt;</span></span><br><span class="line">  SELECT NH4,PH,ZS,ORP,CODMN,COD,DOVAL</span><br><span class="line">   FROM datablarri</span><br><span class="line">   WHERE SN=#&#123;SN&#125;</span><br><span class="line">  AND DATE_FORMAT(addtime,'%Y-%m-%d') &amp;gt; DATE_SUB(CURDATE(),INTERVAL 2</span><br><span class="line">   DAY)</span><br><span class="line">   AND DATE_FORMAT(addtime,'%Y-%m-%d') &amp;lt; CURDATE()</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"insert"</span> <span class="attr">parameterType</span>=<span class="string">"java.util.ArrayList"</span>&gt;</span></span><br><span class="line">  INSERT INTO devicestatusdata</span><br><span class="line">   (SN,HSV,illumination,Quanity,deviceStatus,sensorStatus,transStatus,breakPoint,addtime,statusMsg,spotId,PLR)</span><br><span class="line">   VALUES</span><br><span class="line">   <span class="tag">&lt;<span class="name">foreach</span> <span class="attr">item</span>=<span class="string">"list"</span> <span class="attr">collection</span>=<span class="string">"list"</span> <span class="attr">separator</span>=<span class="string">","</span>&gt;</span></span><br><span class="line">  (</span><br><span class="line">      #&#123;list.SN&#125;,</span><br><span class="line">      #&#123;list.HSV&#125;,</span><br><span class="line">      #&#123;list.illumination&#125;,</span><br><span class="line">      #&#123;list.Quanity&#125;,</span><br><span class="line">      #&#123;list.deviceStatus&#125;,</span><br><span class="line">      #&#123;list.sensorStatus&#125;,</span><br><span class="line">      #&#123;list.transStatus&#125;,</span><br><span class="line">      #&#123;list.breakPoint&#125;,</span><br><span class="line">      #&#123;list.addtime&#125;,</span><br><span class="line">      #&#123;list.statusMsg&#125;,</span><br><span class="line">      #&#123;list.spotId&#125;,</span><br><span class="line">      #&#123;list.PLR&#125;</span><br><span class="line">  )</span><br><span class="line">   <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="实时查询"><a href="#实时查询" class="headerlink" title="实时查询"></a>实时查询</h2><h3 id="功能概述：-1"><a href="#功能概述：-1" class="headerlink" title="功能概述："></a>功能概述：</h3><p>考虑到设备部分数据的即时性，所以在查询设备状态信息时，对个别数据进行实时查询分析。</p>
+<h3 id="功能说明：-1"><a href="#功能说明：-1" class="headerlink" title="功能说明："></a>功能说明：</h3><ol>
+<li>查询设备最新一条数据的上传时间addtime；</li>
+<li>根据addtime判断设备是否离线，若为null，则直接跳过，否则进一步分析设备离线时间，并查询记录设备最新电量；</li>
+<li>若设备正常，则只刷新设备最新电量即可。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">for</span> (DeviceStatusEntity dse : list) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> SN = dse.getSN();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断传输状态和获取中断时间</span></span><br><span class="line">String addtime = dsdDao.queryTime(SN);</span><br><span class="line">    <span class="keyword">if</span>(addtime == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">       Date date = sdf.parse(addtime);</span><br><span class="line">       Date now = <span class="keyword">new</span> Date();</span><br><span class="line">       now.setMinutes(now.getMinutes() - <span class="number">30</span>);</span><br><span class="line">       <span class="keyword">int</span> res = date.compareTo(now);</span><br><span class="line">       <span class="keyword">if</span> (res &lt; <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">long</span> s = <span class="keyword">new</span> Date().getTime() - date.getTime();</span><br><span class="line">          <span class="keyword">if</span> (s &lt; <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>) &#123;</span><br><span class="line">             <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span>);</span><br><span class="line">             dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"分钟"</span>);</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s &lt; <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span>) &#123;</span><br><span class="line">             <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span>);</span><br><span class="line">             dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"小时"</span>);</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">             <span class="keyword">long</span> m = s / (<span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span>);</span><br><span class="line">             dse.setTransStatus(<span class="string">"离线"</span> + m + <span class="string">"天"</span>);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          String bp = dse.getBreakPoint();</span><br><span class="line">          bp = addtime;</span><br><span class="line">          dse.setBreakPoint(bp);</span><br><span class="line">          dse.setAddtime(sdf.format(<span class="keyword">new</span> Date()));</span><br><span class="line"></span><br><span class="line">          <span class="comment">// 查询最新一条数据,分析传感器状态</span></span><br><span class="line">String Q = dsdDao.queryQuanity(SN);</span><br><span class="line">          dse.setQuanity(Q);</span><br><span class="line">          dse.setSensorStatus(<span class="string">"/"</span>);</span><br><span class="line">          dse.setPLR(<span class="string">"/"</span>);</span><br><span class="line">          <span class="keyword">continue</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="keyword">if</span>(!<span class="string">"丢包率异常"</span>.equals(dse.getTransStatus())) dse.setTransStatus(<span class="string">"正常"</span>);</span><br><span class="line"></span><br><span class="line">          dse.setBreakPoint(<span class="string">""</span>);</span><br><span class="line">          dse.setAddtime(sdf.format(<span class="keyword">new</span> Date()));</span><br><span class="line"></span><br><span class="line">          <span class="comment">//查询最新的电量</span></span><br><span class="line">String Q = dsdDao.queryQuanity(SN);</span><br><span class="line">          dse.setQuanity(Q);</span><br><span class="line">       &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ParseException e) &#123;</span><br><span class="line">       e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryTime"</span> <span class="attr">resultType</span>=<span class="string">"String"</span>&gt;</span></span><br><span class="line">  SELECT addtime FROM datablarri WHERE SN = #&#123;SN&#125; ORDER BY id desc limit 1 </span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/五维云/">#五维云</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This is a personal technology blog.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/搭建UDPServer/">搭建UDPServer</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/编解码插件的热加载/">编解码插件的热加载</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/CRC16的Java实现/">CRC16的Java实现</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/编解码插件的开发/">编解码插件开发</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

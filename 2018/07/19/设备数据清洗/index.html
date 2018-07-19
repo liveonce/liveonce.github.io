@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="模块说明:重新设计“系统参数”模块，与设备管理做整合，调整系统参数写入方式，新增数据清洗功能，实现统一化设备信息管理。
+数据清洗功能概述：根据设置的参数和偏移量，对设备数据进行数值修正。
+功能说明：
+获取传感器数据Sensordata中的SN；
+获取所有设备设定的系统参数，非空则进行数据清洗；
+匹配">
+    
+
+    <!--Author-->
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="设备数据清洗"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Live Once"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>设备数据清洗 - Live Once</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/07/19/设备数据清洗/">
+                设备数据清洗
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-19</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h2 id="模块说明"><a href="#模块说明" class="headerlink" title="模块说明:"></a>模块说明:</h2><p>重新设计“系统参数”模块，与设备管理做整合，调整系统参数写入方式，新增数据清洗功能，实现统一化设备信息管理。</p>
+<h2 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>根据设置的参数和偏移量，对设备数据进行数值修正。</p>
+<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><ol>
+<li>获取传感器数据Sensordata中的SN；</li>
+<li>获取所有设备设定的系统参数，非空则进行数据清洗；</li>
+<li>匹配SN成功后，获取Sensordata中对应传感器的数值，进行系数和偏移值的计算后，重新还原到Sensordata。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">editData</span><span class="params">(String Sensordata)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   String sn2 = getSensordataFieldVal(<span class="string">"SN"</span>, Sensordata);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// 查询参数</span></span><br><span class="line">  List&lt;DataParamEntity&gt; list = dDao.queryParams();</span><br><span class="line">      <span class="keyword">for</span> (DataParamEntity dpe : list) &#123;</span><br><span class="line">         <span class="keyword">if</span> (dpe != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(dpe)) &#123;</span><br><span class="line">            String sn = String.valueOf(dpe.getSN());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 匹配SN    </span></span><br><span class="line"> <span class="keyword">if</span> (sn.equals(sn2)) &#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (ifExistSensordataField(<span class="string">"NH4"</span>, Sensordata)) &#123;</span><br><span class="line">                  String cs = dpe.getNH4();</span><br><span class="line">                  <span class="keyword">if</span> (!<span class="string">"0"</span>.equals(cs)) &#123;</span><br><span class="line">                     String[] dvArr = cs.split(<span class="string">","</span>);</span><br><span class="line">                     String xishu = dvArr[<span class="number">0</span>];</span><br><span class="line">                     String pyzhi = dvArr[<span class="number">1</span>];</span><br><span class="line">                     <span class="comment">// 获取传感器数据对应字段的值</span></span><br><span class="line">  String fieldVal = getSensordataFieldVal(<span class="string">"NH4"</span>, Sensordata);</span><br><span class="line">                     Float finalVal = Float.parseFloat(fieldVal) * Float.parseFloat(xishu)</span><br><span class="line">                           + Float.parseFloat(pyzhi);</span><br><span class="line">                     finalVal = (<span class="keyword">float</span>)(Math.floor(finalVal*<span class="number">10</span>))/<span class="number">10</span>;</span><br><span class="line">                     <span class="comment">// 数据过滤</span></span><br><span class="line">  <span class="keyword">if</span> (finalVal &lt; <span class="number">0.0</span> || finalVal &gt; <span class="number">100.0</span>) &#123;</span><br><span class="line">                        BlaRriDataEntity bde = dsDao.queryDate(dpe.getSN());</span><br><span class="line">                        finalVal = bde.getNH4();</span><br><span class="line">                     &#125;</span><br><span class="line">                     Sensordata = recoverySensordata(<span class="string">"NH4"</span>, String.valueOf(finalVal), Sensordata);</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">      System.out.println(e.getMessage());</span><br><span class="line">   &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> Sensordata;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getSensordataFieldVal</span><span class="params">(String field,String Sensordata)</span></span>&#123;</span><br><span class="line">   field = field.toLowerCase();</span><br><span class="line">   Sensordata = Sensordata.toLowerCase();</span><br><span class="line">   <span class="keyword">int</span> fieldIndex = Sensordata.indexOf(field, <span class="number">0</span>);</span><br><span class="line">   <span class="keyword">if</span>(fieldIndex&lt;<span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">int</span> valBeginIndex = Sensordata.indexOf(<span class="string">":"</span>, fieldIndex);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> valEndIndex = Sensordata.indexOf(<span class="string">","</span>, fieldIndex);</span><br><span class="line">   String valStr = <span class="string">""</span>;</span><br><span class="line">   <span class="keyword">if</span>(valEndIndex&lt;<span class="number">0</span>)&#123;</span><br><span class="line">      valStr = Sensordata.substring(valBeginIndex+<span class="number">1</span>, Sensordata.length()-<span class="number">1</span>);</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      valStr = Sensordata.substring(valBeginIndex+<span class="number">1</span>, valEndIndex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> valStr.trim().replace(<span class="string">"&#125;"</span>, <span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">ifExistSensordataField</span><span class="params">(String field, String Sensordata)</span> </span>&#123;</span><br><span class="line">   String valStr = getSensordataFieldVal(field, Sensordata);</span><br><span class="line">   <span class="keyword">return</span> valStr == <span class="keyword">null</span> ? <span class="keyword">false</span> : <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">recoverySensordata</span><span class="params">(String field,String val,String Sensordata)</span></span>&#123;</span><br><span class="line">   String field1 = field.toLowerCase();</span><br><span class="line">   String Sensordata1 = Sensordata.toLowerCase();</span><br><span class="line">   <span class="keyword">int</span> fieldIndex = Sensordata1.indexOf(field1, <span class="number">0</span>);</span><br><span class="line">   <span class="keyword">int</span> valBeginIndex = Sensordata.indexOf(<span class="string">":"</span>, fieldIndex);</span><br><span class="line">   <span class="keyword">int</span> valEndIndex = Sensordata.indexOf(<span class="string">","</span>, fieldIndex);</span><br><span class="line">   String strPrefix = Sensordata.substring(<span class="number">0</span>, valBeginIndex+<span class="number">1</span>);</span><br><span class="line">   String strSubfix = Sensordata.substring(valEndIndex, Sensordata.length()); </span><br><span class="line">   String finalStr = strPrefix+val+strSubfix;</span><br><span class="line">   <span class="keyword">return</span> finalStr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryParams"</span> <span class="attr">resultType</span>=<span class="string">"DataParamEntity"</span>&gt;</span></span><br><span class="line">  SELECT SN,NH4,ORP,PH,ZS,COD,CODMN,DOVAL</span><br><span class="line">FROM device</span><br><span class="line">WHERE NH4!=0</span><br><span class="line">OR ORP!=0</span><br><span class="line">OR PH!=0</span><br><span class="line">OR ZS!=0</span><br><span class="line">OR COD!=0</span><br><span class="line">OR CODMN!=0</span><br><span class="line">OR DOVAL!=0 </span><br><span class="line">  <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/五维云/">#五维云</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This is a personal technology blog.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/搭建UDPServer/">搭建UDPServer</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/编解码插件的热加载/">编解码插件的热加载</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/CRC16的Java实现/">CRC16的Java实现</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/19/编解码插件的开发/">编解码插件开发</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
