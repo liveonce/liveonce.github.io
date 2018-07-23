@@ -10,9 +10,14 @@
 
     <!--Description-->
     
-        <meta name="description" content="插件开发功能概述：支持电信，联通的华为OceanConnect和移动的OneNET平台的数据解析，对不同平台，不同数据协议的NB-DTU所上传的16进制数据，进行CRC16(MODBUS)数据冗余校验，然后根据数据类型进行数据解析。
-功能说明：
-获取已上传至平台的插件的文件路径，以File形式加载，">
+        <meta name="description" content="项目简介后台管理系统脚手架，包括登录，权限验证，后台管理等功能。
+技术架构
+后台框架: SpringMVC,Spring,MyBatis
+前端框架: Bootstrap,jQuery
+数据库: MySQL
+安全框架: Shiro
+项目构建及版本管理: Maven,Git
+开发工具: Intellij">
     
 
     <!--Author-->
@@ -20,7 +25,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="编解码插件的热加载"/>
+        <meta property="og:title" content="OliveAdmin"/>
     
 
     <!--Open Graph Description-->
@@ -42,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>编解码插件的热加载 - Live Once</title>
+    <title>OliveAdmin - Live Once</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -122,13 +127,13 @@
 
     <div class="post-header">
         <h1 class="title">
-            <a href="/2018/07/19/编解码插件的热加载/">
-                编解码插件的热加载
+            <a href="/2018/07/23/OliveAdmin/">
+                OliveAdmin
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2018-07-19</span>
+                <span class="date">2018-07-23</span>
             
             
             
@@ -141,12 +146,15 @@
         
 
         <!-- Post Content -->
-        <h2 id="插件开发"><a href="#插件开发" class="headerlink" title="插件开发"></a>插件开发</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>支持电信，联通的华为OceanConnect和移动的OneNET平台的数据解析，对不同平台，不同数据协议的NB-DTU所上传的16进制数据，进行CRC16(MODBUS)数据冗余校验，然后根据数据类型进行数据解析。</p>
-<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><ol>
-<li>获取已上传至平台的插件的文件路径，以File形式加载，然后转化为URL；</li>
-<li>实例化一个URLClassLoader，加载文件路径的URL，加载编解码类ProtocolAdapter，获取解码方法decode，invoke传参并执行；</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line">URL url = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    url = file.toURI().toURL();</span><br><span class="line">&#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line">ClassLoader loader = <span class="keyword">new</span> URLClassLoader(<span class="keyword">new</span> URL[] &#123;</span><br><span class="line">    url</span><br><span class="line">&#125;);</span><br><span class="line">Class &lt;&lt; ? &gt; cls = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    cls = loader.loadClass(<span class="string">"com.ndww.codec.ProtocolAdapter"</span>);</span><br><span class="line">&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line">Method method = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    method = cls.getMethod(<span class="string">"decode"</span>, String.class);</span><br><span class="line">&#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line">Object o = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    o = method.invoke(<span class="keyword">null</span>, Sensordata);</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>后台管理系统脚手架，包括登录，权限验证，后台管理等功能。</p>
+<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><ul>
+<li>后台框架: SpringMVC,Spring,MyBatis</li>
+<li>前端框架: Bootstrap,jQuery</li>
+<li>数据库: MySQL</li>
+<li>安全框架: Shiro</li>
+<li>项目构建及版本管理: Maven,Git</li>
+<li>开发工具: Intellij IDEA,WebStorm</li>
+</ul>
 
     </div>
 
@@ -155,7 +163,7 @@
     
         <div class="post-tags">
             <i class="fa fa-tags" aria-hidden="true"></i>
-            <a href="/tags/五维云/">#五维云</a>
+            <a href="/tags/SSMKit/">#SSMKit</a>
         </div>
     
 

@@ -121,6 +121,41 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2018/07/23/OliveAdmin/">
+                OliveAdmin
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-23</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h2 id="项目简介"><a href="#项目简介" class="headerlink" title="项目简介"></a>项目简介</h2><p>后台管理系统脚手架，包括登录，权限验证，后台管理等功能。</p>
+<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><ul>
+<li>后台框架: SpringMVC,Spring,MyBatis</li>
+<li>前端框架: Bootstrap,jQuery</li>
+<li>数据库: MySQL</li>
+<li>安全框架: Shiro</li>
+<li>项目构建及版本管理: Maven,Git</li>
+<li>开发工具: Intellij IDEA,WebStorm</li>
+</ul>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/07/23/Spring整合Shiro的配置/">
                 Spring整合Shiro的配置
             </a>
@@ -390,43 +425,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/07/19/设备数据清洗/">
-                设备数据清洗
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-07-19</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <h2 id="模块说明"><a href="#模块说明" class="headerlink" title="模块说明:"></a>模块说明:</h2><p>重新设计“系统参数”模块，与设备管理做整合，调整系统参数写入方式，新增数据清洗功能，实现统一化设备信息管理。</p>
-<h2 id="数据清洗"><a href="#数据清洗" class="headerlink" title="数据清洗"></a>数据清洗</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>根据设置的参数和偏移量，对设备数据进行数值修正。</p>
-<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><ol>
-<li>获取传感器数据Sensordata中的SN；</li>
-<li>获取所有设备设定的系统参数，非空则进行数据清洗；</li>
-<li>匹配SN成功后，获取Sensordata中对应传感器的数值，进行系数和偏移值的计算后，重新还原到Sensordata。</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public <span class="built_in">String</span> editData(<span class="built_in">String</span> Sensordata) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">String</span> sn2 = getSensordataFieldVal(<span class="string">"SN"</span>, Sensordata);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 查询参数</span></span><br><span class="line">        List &lt; DataParamEntity &gt; list = dDao.queryParams();</span><br><span class="line">        <span class="keyword">for</span> (DataParamEntity dpe: list) &#123;</span><br><span class="line">            <span class="keyword">if</span> (dpe != <span class="literal">null</span> &amp;&amp; !<span class="string">""</span>.equals(dpe)) &#123;</span><br><span class="line">                <span class="built_in">String</span> sn = <span class="built_in">String</span>.valueOf(dpe.getSN());</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 匹配SN    </span></span><br><span class="line">                <span class="keyword">if</span> (sn.equals(sn2)) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (ifExistSensordataField(<span class="string">"NH4"</span>, Sensordata)) &#123;</span><br><span class="line">                        <span class="built_in">String</span> cs = dpe.getNH4();</span><br><span class="line">                        <span class="keyword">if</span> (!<span class="string">"0"</span>.equals(cs)) &#123;</span><br><span class="line">                            <span class="built_in">String</span>[] dvArr = cs.split(<span class="string">","</span>);</span><br><span class="line">                            <span class="built_in">String</span> xishu = dvArr[<span class="number">0</span>];</span><br><span class="line">                            <span class="built_in">String</span> pyzhi = dvArr[<span class="number">1</span>];</span><br><span class="line">                            <span class="comment">// 获取传感器数据对应字段的值</span></span><br><span class="line">                            <span class="built_in">String</span> fieldVal = getSensordataFieldVal(<span class="string">"NH4"</span>, Sensordata);</span><br><span class="line">                            Float finalVal = Float.parseFloat(fieldVal) * Float.parseFloat(xishu) +</span><br><span class="line">                                Float.parseFloat(pyzhi);</span><br><span class="line">                            finalVal = (float)(<span class="built_in">Math</span>.floor(finalVal * <span class="number">10</span>)) / <span class="number">10</span>;</span><br><span class="line">                            <span class="comment">// 数据过滤</span></span><br><span class="line">                            <span class="keyword">if</span> (finalVal &lt; <span class="number">0.0</span> || finalVal &gt; <span class="number">100.0</span>) &#123;</span><br><span class="line">                                BlaRriDataEntity bde = dsDao.queryDate(dpe.getSN());</span><br><span class="line">                                finalVal = bde.getNH4();</span><br><span class="line">                            &#125;</span><br><span class="line">                            Sensordata = recoverySensordata(<span class="string">"NH4"</span>, <span class="built_in">String</span>.valueOf(finalVal), Sensordata);</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        System.out.println(e.getMessage());</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Sensordata;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getSensordataFieldVal</span><span class="params">(String field,String Sensordata)</span></span>&#123;</span><br><span class="line">   field = field.toLowerCase();</span><br><span class="line">   Sensordata = Sensordata.toLowerCase();</span><br><span class="line">   <span class="keyword">int</span> fieldIndex = Sensordata.indexOf(field, <span class="number">0</span>);</span><br><span class="line">   <span class="keyword">if</span>(fieldIndex&lt;<span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">int</span> valBeginIndex = Sensordata.indexOf(<span class="string">":"</span>, fieldIndex);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> valEndIndex = Sensordata.indexOf(<span class="string">","</span>, fieldIndex);</span><br><span class="line">   String valStr = <span class="string">""</span>;</span><br><span class="line">   <span class="keyword">if</span>(valEndIndex&lt;<span class="number">0</span>)&#123;</span><br><span class="line">      valStr = Sensordata.substring(valBeginIndex+<span class="number">1</span>, Sensordata.length()-<span class="number">1</span>);</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      valStr = Sensordata.substring(valBeginIndex+<span class="number">1</span>, valEndIndex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> valStr.trim().replace(<span class="string">"&#125;"</span>, <span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">ifExistSensordataField</span><span class="params">(String field, String Sensordata)</span> </span>&#123;</span><br><span class="line">   String valStr = getSensordataFieldVal(field, Sensordata);</span><br><span class="line">   <span class="keyword">return</span> valStr == <span class="keyword">null</span> ? <span class="keyword">false</span> : <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">recoverySensordata</span><span class="params">(String field,String val,String Sensordata)</span></span>&#123;</span><br><span class="line">   String field1 = field.toLowerCase();</span><br><span class="line">   String Sensordata1 = Sensordata.toLowerCase();</span><br><span class="line">   <span class="keyword">int</span> fieldIndex = Sensordata1.indexOf(field1, <span class="number">0</span>);</span><br><span class="line">   <span class="keyword">int</span> valBeginIndex = Sensordata.indexOf(<span class="string">":"</span>, fieldIndex);</span><br><span class="line">   <span class="keyword">int</span> valEndIndex = Sensordata.indexOf(<span class="string">","</span>, fieldIndex);</span><br><span class="line">   String strPrefix = Sensordata.substring(<span class="number">0</span>, valBeginIndex+<span class="number">1</span>);</span><br><span class="line">   String strSubfix = Sensordata.substring(valEndIndex, Sensordata.length()); </span><br><span class="line">   String finalStr = strPrefix+val+strSubfix;</span><br><span class="line">   <span class="keyword">return</span> finalStr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"queryParams"</span> <span class="attr">resultType</span>=<span class="string">"DataParamEntity"</span>&gt;</span></span><br><span class="line">	SELECT SN,NH4,ORP,PH,ZS,COD,CODMN,DOVAL</span><br><span class="line">FROM device</span><br><span class="line">WHERE NH4!=0</span><br><span class="line">OR ORP!=0</span><br><span class="line">OR PH!=0</span><br><span class="line">OR ZS!=0</span><br><span class="line">OR COD!=0</span><br><span class="line">OR CODMN!=0</span><br><span class="line">OR DOVAL!=0 </span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-        </div>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -469,6 +467,10 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/07/23/OliveAdmin/">OliveAdmin</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/07/23/Spring整合Shiro的配置/">Spring整合Shiro的配置</a>
             </li>
             
@@ -478,10 +480,6 @@
             
             <li>
                 <a class="footer-post" href="/2018/07/23/Spring整合MyBatis的配置/">Spring整合MyBatis的配置</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/07/19/新增设备监测数据/">新增设备监测数据</a>
             </li>
             
         </ul>
