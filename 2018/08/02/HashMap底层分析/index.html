@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="HashMap 底层分析
+以下基于 JDK1.7 分析。
+
+
+如图所示，HashMap 底层是基于数组和链表实现的。其中有两个重要的参数：
+
+容量
+负载因子
+
+容量的默认大小是 16，负载因子是 0.75，当 HashMap 的 size &amp;gt; 16*0.75 时就会发生扩容(容量和负载因子都可">
+    
+
+    <!--Author-->
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="HashMap底层分析"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Live Once"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>HashMap底层分析 - Live Once</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/08/02/HashMap底层分析/">
+                HashMap底层分析
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-08-02</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="HashMap-底层分析"><a href="#HashMap-底层分析" class="headerlink" title="HashMap 底层分析"></a>HashMap 底层分析</h1><blockquote>
+<p>以下基于 JDK1.7 分析。</p>
+</blockquote>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fn84b0ftj4j30eb0560sv.jpg" alt=""></p>
+<p>如图所示，HashMap 底层是基于数组和链表实现的。其中有两个重要的参数：</p>
+<ul>
+<li>容量</li>
+<li>负载因子</li>
+</ul>
+<p>容量的默认大小是 16，负载因子是 0.75，当 <code>HashMap</code> 的 <code>size &gt; 16*0.75</code> 时就会发生扩容(容量和负载因子都可以自由调整)。</p>
+<h2 id="put-方法"><a href="#put-方法" class="headerlink" title="put 方法"></a>put 方法</h2><p>首先会将传入的 Key 做 <code>hash</code> 运算计算出 hashcode,然后根据数组长度取模计算出在数组中的 index 下标。</p>
+<p>由于在计算中位运算比取模运算效率高的多，所以 HashMap 规定数组的长度为 <code>2^n</code> 。这样用 <code>2^n - 1</code> 做位运算与取模效果一致，并且效率还要高出许多。</p>
+<p>由于数组的长度有限，所以难免会出现不同的 Key 通过运算得到的 index 相同，这种情况可以利用链表来解决，HashMap 会在 <code>table[index]</code>处形成链表，采用头插法将数据插入到链表中。</p>
+<h2 id="get-方法"><a href="#get-方法" class="headerlink" title="get 方法"></a>get 方法</h2><p>get 和 put 类似，也是将传入的 Key 计算出 index ，如果该位置上是一个链表就需要遍历整个链表，通过 <code>key.equals(k)</code> 来找到对应的元素。</p>
+<h2 id="遍历方式"><a href="#遍历方式" class="headerlink" title="遍历方式"></a>遍历方式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;Map.Entry&lt;String, Integer&gt;&gt; entryIterator = map.entrySet().iterator();</span><br><span class="line">       <span class="keyword">while</span> (entryIterator.hasNext()) &#123;</span><br><span class="line">           Map.Entry&lt;String, Integer&gt; next = entryIterator.next();</span><br><span class="line">           System.out.println(<span class="string">"key="</span> + next.getKey() + <span class="string">" value="</span> + next.getValue());</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;String&gt; iterator = map.keySet().iterator();</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">            String key = iterator.next();</span><br><span class="line">            System.out.println(<span class="string">"key="</span> + key + <span class="string">" value="</span> + map.get(key));</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">map.forEach((key,value)-&gt;&#123;</span><br><span class="line">    System.out.println(<span class="string">"key="</span> + key + <span class="string">" value="</span> + value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>强烈建议</strong>使用第一种 EntrySet 进行遍历。</p>
+<p>第一种可以把 key value 同时取出，第二种还得需要通过 key 取一次 value，效率较低, 第三种需要 <code>JDK1.8</code> 以上，通过外层遍历 table，内层遍历链表或红黑树。 </p>
+<h2 id="notice"><a href="#notice" class="headerlink" title="notice"></a>notice</h2><p>在并发环境下使用 <code>HashMap</code> 容易出现死循环。</p>
+<p>并发场景发生扩容，调用 <code>resize()</code> 方法里的 <code>rehash()</code> 时，容易出现环形链表。这样当获取一个不存在的 <code>key</code> 时，计算出的 <code>index</code> 正好是环形链表的下标时就会出现死循环。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fn85u0a0d9j30n20ii0tp.jpg" alt=""></p>
+<blockquote>
+<p>所以 HashMap 只能在单线程中使用，并且尽量的预设容量，尽可能的减少扩容。</p>
+</blockquote>
+<p>在 <code>JDK1.8</code> 中对 <code>HashMap</code> 进行了优化：<br>当 <code>hash</code> 碰撞之后写入链表的长度超过了阈值(默认为8)，链表将会转换为<strong>红黑树</strong>。</p>
+<p>假设 <code>hash</code> 冲突非常严重，一个数组后面接了很长的链表，此时重新的时间复杂度就是 <code>O(n)</code> 。</p>
+<p>如果是红黑树，时间复杂度就是 <code>O(logn)</code> 。</p>
+<p>大大提高了查询效率。</p>
+<h3 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h3><p><a href="https://mp.weixin.qq.com/s?__biz=MzIxMjE5MTE1Nw==&amp;mid=2653191907&amp;idx=1&amp;sn=876860c5a9a6710ead5dd8de37403ffc&amp;chksm=8c990c39bbee852f71c9dfc587fd70d10b0eab1cca17123c0a68bf1e16d46d71717712b91509&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">什么是HashMap？</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzIxMjE5MTE1Nw==&amp;mid=2653192000&amp;idx=1&amp;sn=118cee6d1c67e7b8e4f762af3e61643e&amp;chksm=8c990d9abbee848c739aeaf25893ae4382eca90642f65fc9b8eb76d58d6e7adebe65da03f80d&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">高并发下的HashMap</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzIxMjE5MTE1Nw==&amp;mid=2653192083&amp;idx=1&amp;sn=5c4becd5724dd72ad489b9ed466329f5&amp;chksm=8c990d49bbee845f69345e4121888ec967df27988bc66afd984a25331d2f6464a61dc0335a54&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">什么是ConcurrentHashMap？</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzIxMjE5MTE1Nw==&amp;mid=2653191832&amp;idx=1&amp;sn=12017161025495c6914b5ab9397baa59&amp;chksm=8c990c42bbee8554ba02eb83d839123bd3bead6ffc736111456ea77367a3df75750cf88016e0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">什么是红黑树？</a></p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/常用集合/">#常用集合</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This is a personal technology blog.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/02/HashMap底层分析/">HashMap底层分析</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/02/LinkedList底层分析/">LinkedList底层分析</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/02/ArrayListVector的底层分析/">ArrayList/Vector的底层分析</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/07/23/Linux常用指令/">Linux常用命令</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
