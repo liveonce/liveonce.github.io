@@ -121,6 +121,37 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2018/08/03/error-collections/">
+                error collections
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-08-03</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><p>error:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RPC failed; curl 52 Empty reply from server</span><br></pre></td></tr></table></figure></p>
+<p>solved:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.postBuffer 157286400</span><br></pre></td></tr></table></figure></p>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p>error:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Expression #2 of SELECT list is not in GROUP BY clause and contains </span><br><span class="line">nonaggregated column ‘sss.month_id’ which is not functionally </span><br><span class="line">dependent on columns in GROUP BY clause; this is incompatible with </span><br><span class="line">sql_mode=only_full_group_by</span><br></pre></td></tr></table></figure></p>
+<p>solved: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">打开navcat，</span><br><span class="line"></span><br><span class="line">用sql查询：</span><br><span class="line"></span><br><span class="line">select @@global.sql_mode</span><br><span class="line"></span><br><span class="line">查询出来的值为：</span><br><span class="line"></span><br><span class="line">ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><br><span class="line"></span><br><span class="line">去掉ONLY_FULL_GROUP_BY，重新设置值。</span><br><span class="line"></span><br><span class="line">set @@global.sql_mode </span><br><span class="line">=’STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION’;</span><br></pre></td></tr></table></figure>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/08/02/HashMap底层分析/">
                 HashMap底层分析
             </a>
@@ -280,72 +311,8 @@
 <p>则结果为：{0,1,2,0,1,2,6};</p>
 <p>实现过程是这样的，先生成一个长度为length的临时数组,将fun数组中srcPos </p>
 <p>到srcPos+length-1之间的数据拷贝到临时数组中，再执行System.arraycopy(临时数组,0,fun,3,3).</p>
-<h3 id="移位运算符"><a href="#移位运算符" class="headerlink" title="移位运算符"></a>移位运算符</h3><p>&lt;&lt;      :     左移运算符，num &lt;&lt; 1,相当于num乘以2</p>
-<blockquote>
-<blockquote>
-<pre><code>:     右移运算符，num &gt;&gt; 1,相当于num除以2
-</code></pre></blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>   :     无符号右移，忽略符号位，空位都以0补齐</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<h3 id="移位运算符"><a href="#移位运算符" class="headerlink" title="移位运算符"></a>移位运算符</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;      :     左移运算符，num &lt;&lt; 1,相当于num乘以2</span><br><span class="line"></span><br><span class="line">&gt;&gt;      :     右移运算符，num &gt;&gt; 1,相当于num除以2</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;    :     无符号右移，忽略符号位，空位都以0补齐</span><br></pre></td></tr></table></figure>
 
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/07/23/Linux常用指令/">
-                Linux常用命令
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-07-23</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            
-        </div>
-    
-
-</div>
-            
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/07/23/Linux常用命令/">
-                Linux常用指令
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-07-23</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            
         </div>
     
 
@@ -499,6 +466,37 @@
 
 </div>
             
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2018/07/19/搭建UDPServer/">
+                搭建UDPServer
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-19</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h2 id="UDPServer"><a href="#UDPServer" class="headerlink" title="UDPServer"></a>UDPServer</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>搭建用于接收基于UDP传输的测试数据的UDPServer，在系统启动时，同时开启一个线程，监听指定的端口，接收数据并调用插件进行数据解析。</p>
+<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><p>在 Servlet API 中有一个 ServletContextListener 接口，它能够监听 ServletContext 对象的生命周期，实际上就是监听 Web 应用的生命周期。当Servlet 容器启动或终止Web 应用时，会触发ServletContextEvent 事件，该事件由ServletContextListener 来处理。在 ServletContextListener 接口中定义了处理ServletContextEvent 事件的两个方法。</p>
+<h3 id="在web-xml中设置Spring监听器"><a href="#在web-xml中设置Spring监听器" class="headerlink" title="在web.xml中设置Spring监听器"></a>在web.xml中设置Spring监听器</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>cn.env.web.util.UDPServer<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:/config/Spring-*.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPServer</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        UDPThread udpThread = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContextEvent.getServletContext()).getBean(UDPThread.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过注入的Bean启动线程</span></span><br><span class="line">        <span class="keyword">if</span> (udpThread != <span class="keyword">null</span>) &#123;</span><br><span class="line">            udpThread.execute();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"udpThread为null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextDestroyed</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"contextDestroyed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPThread</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 封装Bean中注入服务</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceJsonService deviceJsonService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    SpotDao spotDao;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceService deviceService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceDataInsertService deviceDataInsertService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> UDPThread udpThread;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        udpThread = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Server().start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 线程内部类，Thread或者Runnable均可</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 1.创建服务器端 </span></span><br><span class="line">                    datagramsocket DatagramSocket server = <span class="keyword">new</span> DatagramSocket(<span class="number">8888</span>);</span><br><span class="line">                    <span class="comment">// 2.创建数据报，用于接收发送的数据</span></span><br><span class="line">                    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(bytes, bytes.length);</span><br><span class="line">                    <span class="comment">// 3.接收发送的数据</span></span><br><span class="line">                    server.receive(packet); <span class="comment">// 此方法会在接收到数据之前一直阻塞</span></span><br><span class="line">                    <span class="comment">// 4.读取数据进行封装</span></span><br><span class="line">                    JSONObject object = <span class="keyword">new</span> JSONObject(<span class="keyword">new</span> LinkedHashMap());</span><br><span class="line">                    object.put(<span class="string">"SocketAddress"</span>, packet.getSocketAddress().toString());</span><br><span class="line">                    object.put(<span class="string">"rawData"</span>, Utilty.bytesToHexString(bytes).substring(<span class="number">0</span>, packet.getLength() * <span class="number">2</span>));</span><br><span class="line">                    String UDPData = JSONObject.toJSONString(object);</span><br><span class="line">                    <span class="comment">// 5.保存到JSON数据库</span></span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 关闭资源</span></span><br><span class="line">                    server.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+    
+
+</div>
+            
         </section>
     </div>
 </div>
@@ -541,6 +539,10 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/08/03/error-collections/">error collections</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/08/02/HashMap底层分析/">HashMap底层分析</a>
             </li>
             
@@ -550,10 +552,6 @@
             
             <li>
                 <a class="footer-post" href="/2018/08/02/ArrayListVector的底层分析/">ArrayList/Vector的底层分析</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/07/23/Linux常用指令/">Linux常用命令</a>
             </li>
             
         </ul>
