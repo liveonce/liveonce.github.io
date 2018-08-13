@@ -121,6 +121,37 @@
 
     <div class="post-header index">
         <h1 class="title">
+            <a href="/2018/07/19/搭建UDPServer/">
+                搭建UDPServer
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-07-19</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h2 id="UDPServer"><a href="#UDPServer" class="headerlink" title="UDPServer"></a>UDPServer</h2><h3 id="功能概述："><a href="#功能概述：" class="headerlink" title="功能概述："></a>功能概述：</h3><p>搭建用于接收基于UDP传输的测试数据的UDPServer，在系统启动时，同时开启一个线程，监听指定的端口，接收数据并调用插件进行数据解析。</p>
+<h3 id="功能说明："><a href="#功能说明：" class="headerlink" title="功能说明："></a>功能说明：</h3><p>在 Servlet API 中有一个 ServletContextListener 接口，它能够监听 ServletContext 对象的生命周期，实际上就是监听 Web 应用的生命周期。当Servlet 容器启动或终止Web 应用时，会触发ServletContextEvent 事件，该事件由ServletContextListener 来处理。在 ServletContextListener 接口中定义了处理ServletContextEvent 事件的两个方法。</p>
+<h3 id="在web-xml中设置Spring监听器"><a href="#在web-xml中设置Spring监听器" class="headerlink" title="在web.xml中设置Spring监听器"></a>在web.xml中设置Spring监听器</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>cn.env.web.util.UDPServer<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">context-param</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:/config/Spring-*.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">context-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPServer</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        UDPThread udpThread = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContextEvent.getServletContext()).getBean(UDPThread.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过注入的Bean启动线程</span></span><br><span class="line">        <span class="keyword">if</span> (udpThread != <span class="keyword">null</span>) &#123;</span><br><span class="line">            udpThread.execute();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"udpThread为null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextDestroyed</span><span class="params">(ServletContextEvent servletContextEvent)</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"contextDestroyed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UDPThread</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 封装Bean中注入服务</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceJsonService deviceJsonService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    SpotDao spotDao;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceService deviceService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DeviceDataInsertService deviceDataInsertService;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> UDPThread udpThread;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        udpThread = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Server().start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 线程内部类，Thread或者Runnable均可</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 1.创建服务器端 </span></span><br><span class="line">                    datagramsocket DatagramSocket server = <span class="keyword">new</span> DatagramSocket(<span class="number">8888</span>);</span><br><span class="line">                    <span class="comment">// 2.创建数据报，用于接收发送的数据</span></span><br><span class="line">                    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    DatagramPacket packet = <span class="keyword">new</span> DatagramPacket(bytes, bytes.length);</span><br><span class="line">                    <span class="comment">// 3.接收发送的数据</span></span><br><span class="line">                    server.receive(packet); <span class="comment">// 此方法会在接收到数据之前一直阻塞</span></span><br><span class="line">                    <span class="comment">// 4.读取数据进行封装</span></span><br><span class="line">                    JSONObject object = <span class="keyword">new</span> JSONObject(<span class="keyword">new</span> LinkedHashMap());</span><br><span class="line">                    object.put(<span class="string">"SocketAddress"</span>, packet.getSocketAddress().toString());</span><br><span class="line">                    object.put(<span class="string">"rawData"</span>, Utilty.bytesToHexString(bytes).substring(<span class="number">0</span>, packet.getLength() * <span class="number">2</span>));</span><br><span class="line">                    String UDPData = JSONObject.toJSONString(object);</span><br><span class="line">                    <span class="comment">// 5.保存到JSON数据库</span></span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 关闭资源</span></span><br><span class="line">                    server.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
             <a href="/2018/07/19/编解码插件的热加载/">
                 编解码插件的热加载
             </a>
@@ -467,33 +498,6 @@
 
 </div>
             
-                
-<div class="post">
-
-    <div class="post-header index">
-        <h1 class="title">
-            <a href="/2018/07/18/Java反射技术/">
-                Java反射技术
-            </a>
-        </h1>
-        <div class="post-info">
-            
-                <span class="date">2018-07-18</span>
-            
-            
-            
-        </div>
-    </div>
-
-    
-        <div class="content">
-            <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ReflectServiceImpl</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">void</span> sayHello(<span class="built_in">String</span> name) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello "</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//反射生成对象</span></span><br><span class="line">    public ReflectServiceImpl getInstance() &#123;</span><br><span class="line">        ReflectServiceImpl object = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//给类加载器注册了一个类ReflectServiceImpl的全限定名，然后通过newInstance方法初始化了一个类对象</span></span><br><span class="line">            object = (ReflectServiceImpl) Class.forName(<span class="string">"com.xxx.ReflectServiceImpl"</span>).newInstance();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException | InstantiationException | ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取和反射方法</span></span><br><span class="line">    public <span class="built_in">Object</span> reflectMethod() &#123;</span><br><span class="line">        <span class="built_in">Object</span> returnObj = <span class="literal">null</span>;</span><br><span class="line">        ReflectServiceImpl target = <span class="keyword">new</span> ReflectServiceImpl();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//当有具体的对象target，而不知道具体是哪个类时，也可以使用target.getClass().getMethod("sayHello",String.class);代替它</span></span><br><span class="line">            Method method = ReflectServiceImpl.class.getMethod(<span class="string">"sayHello"</span>, <span class="built_in">String</span>.class);</span><br><span class="line">            <span class="comment">//target就是确定用哪个对象调用方法，等同于target.sayHello("Alice");</span></span><br><span class="line">            returnObj = method.invoke(target, <span class="string">"Alice"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnObj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//反射生成对象和反射调度方法</span></span><br><span class="line">    public <span class="built_in">Object</span> reflect() &#123;</span><br><span class="line">        ReflectServiceImpl object = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            object = (ReflectServiceImpl) Class.forName(<span class="string">"com.xxx.ReflectServiceImpl"</span>).newInstance();</span><br><span class="line">            Method method = object.getClass().getMethod(<span class="string">"sayHello"</span>, <span class="built_in">String</span>.class);</span><br><span class="line">            method.invoke(object, <span class="string">"Aaron"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-        </div>
-    
-
-</div>
-            
         </section>
     </div>
 </div>
@@ -506,7 +510,7 @@
                 <a class="" href="/">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </a>
-                <a class="disabled" href="/">
+                <a class="" href="/page/3/">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
@@ -536,6 +540,10 @@
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/08/13/TCP与UDP/">TCP与UDP</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/08/03/error-collections/">error collections</a>
             </li>
             
@@ -545,10 +553,6 @@
             
             <li>
                 <a class="footer-post" href="/2018/08/02/LinkedList底层分析/">LinkedList底层分析</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/02/ArrayListVector的底层分析/">ArrayList/Vector的底层分析</a>
             </li>
             
         </ul>
