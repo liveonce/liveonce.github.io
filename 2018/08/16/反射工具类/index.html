@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="先封装一个反射的工具类，代码如下所示。
+123456package com.lovo.util; public interface TypeConverter &amp;#123; 	public Object convert(Class&amp;lt;?&amp;gt; elemType, String value) t">
+    
+
+    <!--Author-->
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="反射工具类"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Live Once"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>反射工具类 - Live Once</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2018/08/16/反射工具类/">
+                反射工具类
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2018-08-16</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p>先封装一个反射的工具类，代码如下所示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lovo.util;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TypeConverter</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">convert</span><span class="params">(Class&lt;?&gt; elemType, String value)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lovo.util;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 反射工具类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> 骆昊</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectionUtil</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">ReflectionUtil</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> AssertionError();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 根据字段名查找字段的类型</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target 目标对象</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> fieldName 字段名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 字段的类型</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; getFieldType(Object target, String fieldName) &#123;</span><br><span class="line">		Class&lt;?&gt; clazz = target.getClass();</span><br><span class="line">		String[] fs = fieldName.split(<span class="string">"\\."</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fs.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				Field f = clazz.getDeclaredField(fs[i]);</span><br><span class="line">				target = f.getType().newInstance();</span><br><span class="line">				clazz = target.getClass();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> clazz.getDeclaredField(fs[fs.length - <span class="number">1</span>]).getType();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">		        <span class="comment">// throw new RuntimeException(e);</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取对象所有字段的名字</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> obj 目标对象</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 字段名字的数组</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> String[] getFieldNames(Object obj) &#123;</span><br><span class="line">		Class&lt;?&gt; clazz = obj.getClass();</span><br><span class="line">		Field[] fields = clazz.getDeclaredFields();</span><br><span class="line">		List&lt;String&gt; fieldNames = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fields.length; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span>((fields[i].getModifiers() &amp; Modifier.STATIC) == <span class="number">0</span>) &#123;</span><br><span class="line">				fieldNames.add(fields[i].getName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> fieldNames.toArray(<span class="keyword">new</span> String[fieldNames.size()]);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 通过反射取对象指定字段(属性)的值</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target 目标对象</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> fieldName 字段的名字</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> 如果取不到对象指定字段的值则抛出异常</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> 字段的值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getValue</span><span class="params">(Object target, String fieldName)</span> </span>&#123;</span><br><span class="line">		Class&lt;?&gt; clazz = target.getClass();</span><br><span class="line">		String[] fs = fieldName.split(<span class="string">"\\."</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fs.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				Field f = clazz.getDeclaredField(fs[i]);</span><br><span class="line">				f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">				target = f.get(target);</span><br><span class="line">				clazz = target.getClass();</span><br><span class="line">			&#125;</span><br><span class="line">		</span><br><span class="line">			Field f = clazz.getDeclaredField(fs[fs.length - <span class="number">1</span>]);</span><br><span class="line">			f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">			<span class="keyword">return</span> f.get(target);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 通过反射给对象的指定字段赋值</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> target 目标对象</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> fieldName 字段的名称</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> value 值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setValue</span><span class="params">(Object target, String fieldName, Object value)</span> </span>&#123;</span><br><span class="line">		Class&lt;?&gt; clazz = target.getClass();</span><br><span class="line">		String[] fs = fieldName.split(<span class="string">"\\."</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; fs.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				Field f = clazz.getDeclaredField(fs[i]);</span><br><span class="line">				f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">				Object val = f.get(target);</span><br><span class="line">				<span class="keyword">if</span>(val == <span class="keyword">null</span>) &#123;</span><br><span class="line">					Constructor&lt;?&gt; c = f.getType().getDeclaredConstructor();</span><br><span class="line">					c.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">					val = c.newInstance();</span><br><span class="line">					f.set(target, val);</span><br><span class="line">				&#125;</span><br><span class="line">				target = val;</span><br><span class="line">				clazz = target.getClass();</span><br><span class="line">			&#125;</span><br><span class="line">		</span><br><span class="line">			Field f = clazz.getDeclaredField(fs[fs.length - <span class="number">1</span>]);</span><br><span class="line">			f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">			f.set(target, value);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个工具类中封装了四个方法，通过这个工具类可以给对象的指定字段赋值，也可以获取对象指定字段的值和类型，对于对象的某个字段又是一个对象的情况，上面的工具类也能够提供很好的处理，例如 person 对象关联了 car 对象，car 对象关联了 producer 对象，producer 对象有 name 属性，可以用 ReflectionUtil.get(person, “car.producer.name”) 来获取 name 属性的值。</p>
+
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/Java/">#Java</a>
+        </div>
+    
+
+    <!-- Comments -->
+    
+
+</div>
+        </section>
+
+    </div>
+</div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This is a personal technology blog.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/16/反射工具类/">反射工具类</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/13/TCP与UDP/">TCP与UDP</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/03/error-collections/">error collections</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/02/HashMap底层分析/">HashMap底层分析</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+<script src="/js/main.js"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
