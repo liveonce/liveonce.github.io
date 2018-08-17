@@ -460,42 +460,7 @@ ACID1. 原子性（Atomicity）事务被视为不可分割的最小单元，事�
 <h2 id="可重复读（REPEATABLE-READ）"><a href="#可重复读（REPEATABLE-READ）" class="headerlink" title="可重复读（REPEATABLE READ）"></a>可重复读（REPEATABLE READ）</h2><p>保证在同一个事务中多次读取同样数据的结果是一样的。</p>
 <h2 id="可串行化（SERIALIZABLE）"><a href="#可串行化（SERIALIZABLE）" class="headerlink" title="可串行化（SERIALIZABLE）"></a>可串行化（SERIALIZABLE）</h2><p>强制事务串行执行。</p>
 <hr>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">隔离级别</th>
-<th style="text-align:center">脏读</th>
-<th style="text-align:center">不可重复读</th>
-<th style="text-align:center">幻影读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">未提交读</td>
-<td style="text-align:center">YES</td>
-<td style="text-align:center">YES</td>
-<td style="text-align:center">YES</td>
-</tr>
-<tr>
-<td style="text-align:center">提交读</td>
-<td style="text-align:center">NO</td>
-<td style="text-align:center">YES</td>
-<td style="text-align:center">YES</td>
-</tr>
-<tr>
-<td style="text-align:center">可重复读</td>
-<td style="text-align:center">NO</td>
-<td style="text-align:center">NO</td>
-<td style="text-align:center">YES</td>
-</tr>
-<tr>
-<td style="text-align:center">可串行化</td>
-<td style="text-align:center">NO</td>
-<td style="text-align:center">NO</td>
-<td style="text-align:center">NO</td>
-</tr>
-</tbody>
-</table>
+<p>（注：YES：导致；NO：避免）<br>| 隔离级别 | 脏读 | 不可重复读 | 幻影读 |<br>| :-: | :-: | :-: | :-: |<br>| 未提交读 | YES | YES | YES |<br>| 提交读 | NO | YES | YES |<br>| 可重复读 | NO | NO | YES |<br>| 可串行化 | NO | NO | NO |</p>
 <h1 id="五、多版本并发控制"><a href="#五、多版本并发控制" class="headerlink" title="五、多版本并发控制"></a>五、多版本并发控制</h1><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。</p>
 <p>而未提交读隔离级别总是读取最新的数据行，无需使用 MVCC。</p>
 <p>可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
@@ -839,19 +804,19 @@ ACID1. 原子性（Atomicity）事务被视为不可分割的最小单元，事�
         <ul>
             
             <li>
+                <a class="footer-post" href="/2018/08/16/MySQL/">MySQL</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2018/08/16/SQL/">SQL</a>
+            </li>
+            
+            <li>
                 <a class="footer-post" href="/2018/08/16/数据库系统原理/">数据库系统原理</a>
             </li>
             
             <li>
                 <a class="footer-post" href="/2018/08/16/反射工具类/">反射工具类</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/13/TCP与UDP/">TCP与UDP</a>
-            </li>
-            
-            <li>
-                <a class="footer-post" href="/2018/08/03/error-collections/">error collections</a>
             </li>
             
         </ul>
